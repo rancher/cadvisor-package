@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+: ${GIT:=https://github.com/google/cadvisor.git}
+: ${COMMIT:=0.7.1}
+
+cd $(dirname $0)/..
+
+BASE=$(pwd)
+
+export GOPATH=${BASE}/build
+export PATH=${GOPATH}/bin:$PATH
+
+mkdir -p build/src/github.com/google
+cd build/src/github.com/google
+
+go get github.com/tools/godep
+go install github.com/tools/godep
+
+if [ ! -e cadvisor ]; then
+    git clone $GIT
+fi
+
+cd cadvisor
+git checkout $COMMIT
+
+godep go build --ldflags '-extldflags "-static"' -a github.com/google/cadvisor
+
+mkdir -p $BASE/dist/artifacts
+cp cadvisor $BASE/dist
