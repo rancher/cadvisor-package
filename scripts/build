@@ -28,3 +28,4 @@ godep go build --ldflags '-extldflags "-static"' -a github.com/google/cadvisor
 
 mkdir -p $BASE/dist/artifacts
 cp cadvisor $BASE/dist
+cp $BASE/cadvisor.sh $BASE/dist
