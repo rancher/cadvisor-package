@@ -2,7 +2,7 @@
 set -e
 
 : ${GIT:=https://github.com/google/cadvisor.git}
-: ${COMMIT:=0.16.0}
+: ${COMMIT:=v0.19.3}
 
 cd $(dirname $0)/..
 
