@@ -24,7 +24,7 @@ fi
 cd cadvisor
 git checkout $COMMIT
 
-godep go build --ldflags '-extldflags "-static"' -a github.com/google/cadvisor
+godep go build -tags netgo -installsuffix netgo --ldflags '-extldflags "-static"' -a github.com/google/cadvisor
 
 mkdir -p $BASE/dist/artifacts
 cp cadvisor $BASE/dist
