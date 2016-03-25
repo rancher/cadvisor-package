@@ -26,4 +26,10 @@ del()
 del &
 
 shift 1
-nsenter --mount=/host/proc/1/ns/mnt -- "${FILE}" "$@"
+
+PID=$(echo $(ps -o ppid= -p $(docker inspect -f '{{.State.Pid}}' rancher-agent)))
+if [ ! -d /proc/$PID ]; then
+    PID=1
+fi
+echo Monitoring mount context of PID $PID
+nsenter --mount=/host/proc/$PID/ns/mnt -- "${FILE}" "$@"
