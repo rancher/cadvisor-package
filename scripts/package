@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+ARCH=${ARCH:?"ARCH not set"}
+SUFFIX=""
+[ "${ARCH}" != "amd64" ] && SUFFIX="_${ARCH}"
+
 cd $(dirname $0)/..
 
 CONTENT=$(cat /proc/sys/kernel/random/uuid)
@@ -17,4 +21,4 @@ cd build
 sha1sum -b $(find ${CONTENT} -type f) > ${CONTENT}/SHA1SUMS
 sha1sum ${CONTENT}/SHA1SUMS > ${CONTENT}/SHA1SUMSSUM
 
-tar czf ../dist/artifacts/cadvisor.tar.gz ${CONTENT}
+tar czf ../dist/artifacts/cadvisor${SUFFIX}.tar.gz ${CONTENT}

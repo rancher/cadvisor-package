@@ -17,7 +17,6 @@ mkdir -p build/src/github.com/google
 cd build/src/github.com/google
 
 go get github.com/tools/godep
-go install github.com/tools/godep
 
 if [ ! -e cadvisor ]; then
     git clone $GIT
@@ -28,7 +27,7 @@ git checkout $COMMIT
 
 VERSION=$(cat version/VERSION)
 
-godep go build -tags netgo -installsuffix netgo --ldflags "-extldflags -static -X ${repo_path}/version.Version=$VERSION" -a github.com/google/cadvisor
+godep go build -tags netgo -installsuffix netgo --ldflags "-extldflags -static -X ${repo_path}/version.Version=$VERSION -s" -a github.com/google/cadvisor
 
 mkdir -p $BASE/dist/artifacts
 cp cadvisor $BASE/dist
