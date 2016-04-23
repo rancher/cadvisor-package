@@ -1,0 +1,8 @@
+FROM golang:1.6.2
+WORKDIR /source
+
+ENV DAPPER_SOURCE /source
+ENV DAPPER_OUTPUT ./dist/artifacts
+ENV SHELL /bin/bash
+
+CMD ./scripts/ci
