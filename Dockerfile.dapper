@@ -1,4 +1,10 @@
-FROM golang:1.6.2
+FROM armhf/ubuntu:16.04
+RUN apt-get update && apt-get install -y wget gcc git && \
+    wget -O - https://storage.googleapis.com/golang/go1.6.2.linux-armv6l.tar.gz | tar -xz -C /usr/local
+
+ENV PATH $PATH:/usr/local/go/bin
+ENV GOPATH /go
+
 WORKDIR /source
 
 ENV DAPPER_SOURCE /source

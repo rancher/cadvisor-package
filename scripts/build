@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-: ${GIT:=https://github.com/google/cadvisor.git}
-: ${COMMIT:=v0.22.0}
+: ${GIT:=https://github.com/imikushin/cadvisor.git}
+: ${COMMIT:=trash}
 
 repo_path="github.com/google/cadvisor"
 
@@ -16,9 +16,6 @@ export PATH=${GOPATH}/bin:$PATH
 mkdir -p build/src/github.com/google
 cd build/src/github.com/google
 
-go get github.com/tools/godep
-go install github.com/tools/godep
-
 if [ ! -e cadvisor ]; then
     git clone $GIT
 fi
@@ -28,7 +25,7 @@ git checkout $COMMIT
 
 VERSION=$(cat version/VERSION)
 
-godep go build -tags netgo -installsuffix netgo --ldflags "-extldflags -static -X ${repo_path}/version.Version=$VERSION" -a github.com/google/cadvisor
+go build -tags netgo -installsuffix netgo --ldflags "-extldflags -static -X ${repo_path}/version.Version=$VERSION" -a github.com/google/cadvisor
 
 mkdir -p $BASE/dist/artifacts
 cp cadvisor $BASE/dist
