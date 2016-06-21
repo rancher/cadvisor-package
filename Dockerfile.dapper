@@ -1,14 +1,36 @@
-FROM armhf/ubuntu:16.04
-RUN apt-get update && apt-get install -y wget gcc git && \
-    wget -O - https://storage.googleapis.com/golang/go1.6.2.linux-armv6l.tar.gz | tar -xz -C /usr/local
+FROM ubuntu:16.04
+# FROM arm64=armhf/ubuntu:16.04 arm=armhf/ubuntu:16.04
 
-ENV PATH $PATH:/usr/local/go/bin
-ENV GOPATH /go
+ARG DAPPER_HOST_ARCH
+ENV HOST_ARCH=${DAPPER_HOST_ARCH} ARCH=${DAPPER_HOST_ARCH}
 
-WORKDIR /source
+
+RUN apt-get update && \
+    apt-get install -y \
+        build-essential \
+        ca-certificates \
+        curl \
+        gccgo \
+        git \
+        less \
+        locales \
+        vim \
+        wget \
+        uuid-runtime
+
+ENV GO_VERSION=1.6.2
+RUN ln -sf go-6 /usr/bin/go && \
+    curl -sfL https://storage.googleapis.com/golang/go${GO_VERSION}.src.tar.gz | tar -xzf - -C /usr/local && \
+    cd /usr/local/go/src && \
+    GOROOT_BOOTSTRAP=/usr GOARCH=${HOST_ARCH} GOHOSTARCH=${HOST_ARCH} ./make.bash && \
+    rm /usr/bin/go
+
+ENV GOPATH=/go PATH=/go/bin:/usr/local/go/bin:${PATH}
 
 ENV DAPPER_SOURCE /source
-ENV DAPPER_OUTPUT ./dist/artifacts
+ENV DAPPER_OUTPUT ./dist
+
+WORKDIR ${DAPPER_SOURCE}
 ENV SHELL /bin/bash
 
 CMD ./scripts/ci

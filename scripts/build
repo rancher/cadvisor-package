@@ -2,7 +2,7 @@
 set -e
 
 : ${GIT:=https://github.com/imikushin/cadvisor.git}
-: ${COMMIT:=trash}
+: ${COMMIT:=trash-0.23.2}
 
 repo_path="github.com/google/cadvisor"
 
